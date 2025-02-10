@@ -14,9 +14,24 @@ function SuccessLogin() {
     if (accessToken) {
       localStorage.setItem("access_token", accessToken);
       console.log("Token saved:", accessToken);
-      navigate("/dashboard");
+      fetch("https://stright-deal-api.vercel.app/api/auth/get-token-cookies", {
+        method: "GET",
+        credentials: "include",
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          const refreshToken = data.refreshToken;
+
+          console.log("Access Token:", accessToken);
+          console.log("Refresh Token:", refreshToken);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+
+      // navigate("/dashboard");
     } else {
-      navigate("/login");
+      // navigate("/login");
     }
   }, [navigate]);
 
